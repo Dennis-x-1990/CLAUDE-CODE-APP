@@ -538,11 +538,7 @@
     </span>
   </div>
 
-  <div class="debug-panel" id="debugPanel" style="display:block;border-top:1px solid #333;background:#0a0a0a;max-height:160px;overflow-y:auto;flex-shrink:0;font-family:Consolas,monospace;font-size:10px;padding:4px 8px">
-    <div style="color:#888;cursor:pointer;margin-bottom:2px" onclick="this.parentElement.style.display="none"">[-] Debug Log (click to hide)</div>
-    <div id="debugLog" style="color:#aaa;line-height:1.4;white-space:pre-wrap"></div>
-  </div>
-
+  
   <div class="input-area" id="inputArea">
     <textarea id="messageInput" placeholder="输入消息... (Enter 发送, Shift+Enter 换行)" rows="1" onkeydown="handleInputKey(event)" oninput="autoResizeInput()"></textarea>
     <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>发送</button>
@@ -550,6 +546,7 @@
 
   <div class="model-bar" style="padding:8px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--sidebar-bg);flex-shrink:0;font-size:12px">
     <span style="color:var(--text-muted);white-space:nowrap">模型:</span>
+    <span id="debugLog" style="flex:1;color:#666;font-family:Consolas,monospace;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;cursor:pointer" title="Ctrl+D for full log" onclick="toggleDebug()"></span>
     <select class="model-selector" id="modelSelector" onchange="switchModel()" style="flex:1;max-width:300px">
       <option value="">加载中...</option>
     </select>
@@ -851,14 +848,21 @@ function dlog(tag, msg) {
   const ts = new Date().toLocaleTimeString();
   const line = '[' + ts + '] ' + tag + ': ' + msg;
   _logLines.push(line);
-  if (_logLines.length > 100) _logLines.shift();
+  if (_logLines.length > 200) _logLines.shift();
   const el = document.getElementById('debugLog');
-  if (el) el.textContent = _logLines.slice(-50).join('\n');
+  if (el) { el.textContent = line; el.title = _logLines.join('\n'); }
   console.log('[DEBUG]', line);
 }
 function toggleDebug() {
-  const p = document.getElementById('debugPanel');
-  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+  const existing = document.getElementById('debugPopup');
+  if (existing) { existing.remove(); return; }
+  const popup = document.createElement('div');
+  popup.id = 'debugPopup';
+  popup.style.cssText = 'position:fixed;bottom:0;left:0;right:0;max-height:300px;overflow-y:auto;background:#0a0a0a;border-top:2px solid #333;font-family:Consolas,monospace;font-size:10px;padding:8px 16px;z-index:9999;color:#aaa;white-space:pre-wrap;line-height:1.4';
+  popup.textContent = _logLines.join('\n');
+  popup.onclick = function() { this.remove(); };
+  document.body.appendChild(popup);
+  popup.scrollTop = popup.scrollHeight;
 }
 document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'd') { e.preventDefault(); toggleDebug(); }
@@ -940,38 +944,42 @@ async function sendMessage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message }),
     });
+    dlog("send", "job started: " + res.jobId);
 
-    // Poll for completion (max 2 min)
-    let attempts = 0;
-    while (attempts < 60) {
-      await sleep(2000);
+    // Release sending lock IMMEDIATELY so poll can refresh
+    state.sending = false;
+    sendBtn.disabled = false;
+    sendBtn.textContent = '发送';
+    document.getElementById('statusSend').style.display = 'none';
+    ta.focus();
+
+    // Background poll for job completion
+    let jobAttempts = 0;
+    const checkJob = async () => {
+      if (jobAttempts++ > 60) { dlog("send", "job timeout"); return; }
       try {
-        const job = await API(`/api/jobs/${res.jobId}`);
+        const job = await API('/api/jobs/' + res.jobId);
         if (job.status === 'done' || job.status === 'error' || job.status === 'timeout') {
-          if (job.status === 'error') {
-            console.error('Send error:', job.error || job.stderr);
-          }
-          break;
+          dlog("send", "job complete: " + job.status);
+          state.lastMsgCount = 0;
+          await loadConversation(state.currentViewSessionId, false);
+          await loadSessions();
+          return;
         }
-      } catch (e) { break; }
-      attempts++;
-    }
+      } catch(e) {}
+      setTimeout(checkJob, 2000);
+    };
+    setTimeout(checkJob, 2000);
 
-    // Reload conversation to get the response
-    state.lastMsgCount = 0; // force refresh
-    await loadConversation(state.currentViewSessionId, false);
-    await loadSessions();
   } catch (e) {
     console.error('Send failed:', e);
     alert('消息发送失败，请检查 claude CLI 是否在 PATH 中');
-  }
-
-  state.sending = false;
-  sendBtn.disabled = false;
-  sendBtn.textContent = '发送';
-  statusEl.style.display = 'none';
-  ta.focus();
-}
+    state.sending = false;
+    sendBtn.disabled = false;
+    sendBtn.textContent = '发送';
+    statusEl.style.display = 'none';
+    ta.focus();
+  }}
 
 function showOptimisticMessage(text) {
   const container = document.getElementById('chatContainer');
