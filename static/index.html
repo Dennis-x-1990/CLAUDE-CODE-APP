@@ -16,88 +16,89 @@
 </script>
 <style>
   :root {
-    /* ── light theme (default) ────────────────────────── */
-    --bg: #f4f5f7;
-    --sidebar-bg: #eceded;
+    /* ── light · warm paper (Claude-style) ─────────────── */
+    --bg: #faf9f5;
+    --sidebar-bg: #f0eee8;
     --card-bg: #ffffff;
-    --card-hover: #fafafa;
-    --border: #e3e4e8;
-    --border-strong: #d5d7dc;
-    --text: #17181c;
-    --text-secondary: #494c55;
-    --text-muted: #82858f;
-    --accent: #e08709;
-    --accent-hover: #c27408;
-    --accent-soft: #fcefdd;
-    --accent-dim: #f1b45f;
-    --user-bubble: linear-gradient(135deg, #e9f0fb, #dbe8fa);
-    --user-bubble-border: #c9dcf5;
-    --assistant-bubble: #ffffff;
-    --thinking-bg: #f3f4f6;
-    --thinking-border: #e3e4e8;
-    --green: #15803d;
-    --green-soft: #e8f7ee;
-    --red: #dc2626;
-    --red-soft: #fdecec;
-    --yellow: #eab308;
-    --warn-text: #b45309;
-    --perm-bg: #fdf6e7;
-    --perm-border: #efd8a7;
-    --perm-text: #8a5a08;
-    --perm-confirm-bg: #e9f2fd;
-    --perm-confirm-border: #b9d7f8;
-    --perm-choice-bg: #e9f9ee;
-    --perm-choice-border: #b4e5c4;
-    --tool-bg: #f2faf5;
-    --tool-border: #cfe9da;
-    --cli-text: #4b5563;
-    --shadow-sm: 0 1px 2px rgba(16, 18, 24, 0.05);
-    --shadow-md: 0 4px 16px rgba(16, 18, 24, 0.08);
-    --shadow-lg: 0 16px 48px rgba(16, 18, 24, 0.16);
+    --card-hover: #f5f3ee;
+    --border: #e8e5dd;
+    --border-strong: #d9d5ca;
+    --text: #1f1e1c;
+    --text-secondary: #5a5750;
+    --text-muted: #96928a;
+    --accent: #c96442;
+    --accent-hover: #b5522f;
+    --accent-soft: #f7e9e2;
+    --accent-dim: #e3a28c;
+    --user-bubble: #ece6d9;
+    --user-bubble-border: #e0d9c8;
+    --assistant-bubble: transparent;
+    --thinking-bg: #f1efe9;
+    --thinking-border: #e8e5dd;
+    --green: #2f7d46;
+    --green-soft: #e9f4ec;
+    --red: #c94436;
+    --red-soft: #faeceb;
+    --yellow: #d9a514;
+    --warn-text: #a16207;
+    --perm-bg: #f8efe4;
+    --perm-border: #ecd9bf;
+    --perm-text: #8a5a2b;
+    --perm-confirm-bg: #edf2f8;
+    --perm-confirm-border: #c8d9ec;
+    --perm-choice-bg: #edf6ee;
+    --perm-choice-border: #c4e3cd;
+    --tool-bg: #f1efe8;
+    --tool-border: #e0dccf;
+    --cli-text: #57534e;
+    --shadow-sm: 0 1px 2px rgba(87, 73, 56, 0.06);
+    --shadow-md: 0 4px 20px rgba(87, 73, 56, 0.10);
+    --shadow-lg: 0 18px 50px rgba(87, 73, 56, 0.18);
     --radius: 12px;
+    --font-display: Georgia, 'Times New Roman', 'Songti SC', 'SimSun', serif;
     --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
     --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', system-ui, sans-serif;
     color-scheme: light;
   }
 
   :root[data-theme="dark"] {
-    --bg: #131417;
-    --sidebar-bg: #0e0f11;
-    --card-bg: #1a1c20;
-    --card-hover: #202228;
-    --border: #26282e;
-    --border-strong: #33363d;
-    --text: #e8e9ec;
-    --text-secondary: #b4b7bf;
-    --text-muted: #7d818c;
-    --accent: #f59e0b;
-    --accent-hover: #fbbf24;
-    --accent-soft: #2b2113;
-    --accent-dim: #92610c;
-    --user-bubble: linear-gradient(135deg, #1d3050, #1a2941);
-    --user-bubble-border: #2a4066;
-    --assistant-bubble: #1a1c20;
-    --thinking-bg: #17181c;
-    --thinking-border: #26282e;
-    --green: #34d399;
-    --green-soft: #12271e;
-    --red: #f87171;
-    --red-soft: #2d1517;
-    --yellow: #facc15;
-    --warn-text: #fbbf24;
-    --perm-bg: #27200f;
-    --perm-border: #4a3c17;
-    --perm-text: #fbd38d;
-    --perm-confirm-bg: #14202e;
-    --perm-confirm-border: #2c4a66;
-    --perm-choice-bg: #12241a;
-    --perm-choice-border: #2a5540;
-    --tool-bg: #12241a;
-    --tool-border: #244634;
+    --bg: #262624;
+    --sidebar-bg: #1f1e1c;
+    --card-bg: #30302e;
+    --card-hover: #383735;
+    --border: #3d3b38;
+    --border-strong: #4a4844;
+    --text: #f5f4ee;
+    --text-secondary: #c8c5bb;
+    --text-muted: #8f8d85;
+    --accent: #d97757;
+    --accent-hover: #e8906f;
+    --accent-soft: #3b2a22;
+    --accent-dim: #8a5a44;
+    --user-bubble: #3a3936;
+    --user-bubble-border: #4a4844;
+    --assistant-bubble: transparent;
+    --thinking-bg: #2c2b29;
+    --thinking-border: #3d3b38;
+    --green: #6ccb8b;
+    --green-soft: #1e2d22;
+    --red: #e5776b;
+    --red-soft: #33201d;
+    --yellow: #e5c15c;
+    --warn-text: #e5c15c;
+    --perm-bg: #2e2820;
+    --perm-border: #453c2e;
+    --perm-text: #e2c9a4;
+    --perm-confirm-bg: #232b33;
+    --perm-confirm-border: #384a5c;
+    --perm-choice-bg: #212b23;
+    --perm-choice-border: #3a4f3f;
+    --tool-bg: #2c2b26;
+    --tool-border: #43413a;
     --cli-text: #d4d4d8;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.65);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 18px 50px rgba(0, 0, 0, 0.6);
     color-scheme: dark;
   }
 
@@ -143,17 +144,18 @@
     width: 30px;
     height: 30px;
     border-radius: 9px;
-    background: linear-gradient(135deg, #f59e0b, #b45309);
+    background: linear-gradient(135deg, #d97757, #b5522f);
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 15px;
     box-shadow: var(--shadow-sm);
   }
   .sidebar-header .logo-text {
-    font-size: 15px;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: 15.5px;
+    font-weight: 500;
     letter-spacing: -0.2px;
   }
   .sidebar-header .active-dot {
@@ -351,17 +353,22 @@
   }
 
   .main-header {
-    padding: 8px 14px;
+    padding: 9px 16px;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     gap: 8px;
-    background: var(--card-bg);
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     flex-shrink: 0;
+    position: relative;
+    z-index: 5;
   }
   .main-header .session-title {
-    font-size: 13px;
-    font-weight: 600;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 500;
     flex: 1;
     white-space: nowrap;
     overflow: hidden;
@@ -427,73 +434,80 @@
   .chat-container {
     flex: 1;
     overflow-y: auto;
-    padding: 18px 22px;
+    padding: 26px 24px 20px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 18px;
+  }
+  .chat-container > * {
+    width: 100%;
+    max-width: 820px;
+    align-self: center;
   }
 
   .msg-row {
     display: flex;
-    gap: 10px;
-    align-items: flex-end;
+    gap: 12px;
+    align-items: flex-start;
     animation: fadeIn 0.22s ease;
   }
   .msg-row.user { flex-direction: row-reverse; }
 
   .avatar {
-    width: 28px;
-    height: 28px;
-    border-radius: 9px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
-    margin-bottom: 2px;
+    font-size: 12px;
+    margin-top: 1px;
     user-select: none;
   }
   .avatar.assistant {
-    background: linear-gradient(135deg, #f59e0b, #b45309);
+    background: var(--accent);
     color: #fff;
-    box-shadow: var(--shadow-sm);
+    font-family: var(--font-display);
+    line-height: 1;
   }
   .avatar.user {
-    background: var(--thinking-bg);
-    border: 1px solid var(--border);
+    background: var(--card-bg);
+    border: 1px solid var(--border-strong);
     color: var(--text-secondary);
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 700;
   }
 
   .msg {
-    max-width: min(78%, 720px);
-    padding: 9px 13px;
+    min-width: 0;
+    padding: 2px 2px;
     border-radius: var(--radius);
-    font-size: 13px;
-    line-height: 1.62;
+    font-size: 13.5px;
+    line-height: 1.68;
     position: relative;
     overflow-wrap: break-word;
   }
 
   .msg.user {
-    align-self: flex-end;
     background: var(--user-bubble);
     border: 1px solid var(--user-bubble-border);
-    border-bottom-right-radius: 4px;
+    border-radius: 16px;
+    border-bottom-right-radius: 6px;
+    padding: 9px 14px;
+    margin-left: auto;
+    max-width: 78%;
   }
   .msg.assistant {
-    align-self: flex-start;
     background: var(--assistant-bubble);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-sm);
-    border-bottom-left-radius: 4px;
+    border: none;
+    box-shadow: none;
+    padding: 2px 2px;
   }
   .msg .role-label {
-    font-size: 9.5px;
+    font-size: 10px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
+    letter-spacing: 0.4px;
     margin-bottom: 6px;
     color: var(--text-muted);
   }
@@ -501,13 +515,14 @@
   .msg .content p { margin: 4px 0; }
   .msg .content pre {
     background: var(--thinking-bg);
-    border-radius: 8px;
-    padding: 10px 14px;
+    border-radius: 10px;
+    padding: 12px 14px;
     overflow-x: auto;
     font-family: var(--font-mono);
     font-size: 11.5px;
-    margin: 8px 0;
+    margin: 10px 0;
     border: 1px solid var(--thinking-border);
+    line-height: 1.55;
   }
   .msg .content code {
     font-family: var(--font-mono);
@@ -522,10 +537,10 @@
   .thinking-block {
     background: var(--thinking-bg);
     border: 1px solid var(--thinking-border);
-    border-left: 3px solid var(--accent-dim);
+    border-left: 3px solid var(--accent);
     border-radius: 8px;
-    padding: 10px 14px;
-    margin: 6px 0;
+    padding: 9px 13px;
+    margin: 8px 0;
     font-size: 12px;
     color: var(--text-muted);
     font-style: italic;
@@ -550,9 +565,9 @@
   .tool-block {
     background: var(--tool-bg);
     border: 1px solid var(--tool-border);
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 8px 12px;
-    margin: 6px 0;
+    margin: 8px 0;
     font-family: var(--font-mono);
     font-size: 11px;
   }
@@ -598,22 +613,24 @@
     width: 60px;
     height: 60px;
     border-radius: 18px;
-    background: linear-gradient(135deg, #f59e0b, #b45309);
+    background: linear-gradient(135deg, #d97757, #b5522f);
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
-    box-shadow: var(--shadow-md), 0 0 0 8px var(--accent-soft);
-    margin-bottom: 6px;
+    font-size: 26px;
+    font-family: var(--font-display);
+    box-shadow: var(--shadow-md), 0 0 0 10px var(--accent-soft);
+    margin-bottom: 10px;
   }
   .welcome-title {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.4px;
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
     color: var(--text);
   }
-  .welcome-sub { font-size: 12.5px; color: var(--text-muted); }
+  .welcome-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
   .welcome-tips {
     display: flex;
     gap: 8px;
@@ -633,9 +650,8 @@
 
   /* ── input area ──────────────────────────────────────── */
   .input-area {
-    border-top: 1px solid var(--border);
-    padding: 14px 28px 10px;
-    background: var(--bg);
+    padding: 10px 24px 6px;
+    background: transparent;
     flex-shrink: 0;
   }
   .composer {
@@ -643,15 +659,18 @@
     gap: 10px;
     align-items: flex-end;
     background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 18px;
     padding: 10px 12px;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
     transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
   }
   .composer:focus-within {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow-sm);
+    box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow-md);
   }
   .input-area textarea {
     flex: 1;
@@ -671,17 +690,23 @@
   .input-area .attach-btn { align-self: flex-end; font-size: 15px; border: none; background: transparent; }
   .input-area .attach-btn:hover { background: var(--thinking-bg); }
   .input-area .send-btn {
-    padding: 9px 16px;
-    border-radius: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     border: none;
     background: var(--accent);
     color: #fff;
-    font-weight: 600;
-    font-size: 13px;
+    font-size: 15px;
+    line-height: 1;
     cursor: pointer;
     transition: all 0.15s;
     white-space: nowrap;
     align-self: flex-end;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-sans);
   }
   .input-area .send-btn:hover { background: var(--accent-hover); }
   .input-area .send-btn:disabled {
@@ -817,8 +842,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    padding: 8px 28px 0;
-    background: var(--bg);
+    padding: 8px 24px 0;
+    background: transparent;
+    width: 100%;
+    max-width: 868px;
+    margin: 0 auto;
     flex-shrink: 0;
   }
   .chips:empty { display: none; }
@@ -929,9 +957,10 @@
   .modal {
     background: var(--card-bg);
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 20px;
     width: 460px;
+    box-shadow: var(--shadow-lg);
     max-width: 92vw;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
   }
@@ -1129,12 +1158,12 @@
       <button class="btn attach-btn" id="attachBtn" onclick="document.getElementById('fileInput').click()" title="添加附件（也可拖拽文件到窗口或粘贴截图）">📎</button>
       <input type="file" id="fileInput" multiple style="display:none" onchange="onFilePicked(this)">
       <textarea id="messageInput" placeholder="给 Claude 发消息… (Enter 发送, Shift+Enter 换行)" rows="1" onkeydown="handleInputKey(event)" oninput="autoResizeInput()"></textarea>
-      <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>发送</button>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled title="发送 (Enter)">↑</button>
     </div>
     <div class="composer-hint">Claude 可能会出错，请核查重要信息 · 消息由 Claude Code CLI 引擎处理</div>
   </div>
 
-  <div class="model-bar" style="padding:0 28px 6px;display:flex;align-items:center;gap:10px;flex-shrink:0;font-size:12px">
+  <div class="model-bar" style="padding:0 24px 4px;display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-shrink:0;font-size:11px;width:100%;max-width:868px;margin:0 auto">
     <span id="debugLog" style="flex:1;color:var(--text-muted);font-family:var(--font-mono);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left;opacity:0.7;cursor:pointer" title="Ctrl+D 查看完整日志" onclick="toggleDebug()"></span>
     <select class="model-selector" id="modelSelector" onchange="switchModel()" style="max-width:240px">
       <option value="">加载中...</option>
@@ -1616,7 +1645,7 @@ function renderMessages(messages) {
       if (blocks) {
         const model = (m.message.model || '').replace(/-.*/, '');
         fragments.push(`<div class="msg-row assistant">
-          <div class="avatar assistant">⚡</div>
+          <div class="avatar assistant">✦</div>
           <div class="msg assistant">
             <div class="role-label">Claude${model ? ' · ' + escHtml(model) : ''}</div>
             <div class="content">${blocks}</div>
@@ -1777,8 +1806,9 @@ async function sendMessage() {
     state.chatJob = res.jobId;
     state.live = { text: '', tools: [], thinking: false, viewKey: state.currentViewSessionId || '__new__' };
     sendBtn.disabled = false;
-    sendBtn.textContent = '■ 停止';
-    sendBtn.style.opacity = '0.85';
+    sendBtn.textContent = '■';
+    sendBtn.title = '停止生成';
+    sendBtn.style.opacity = '0.9';
     statusEl.style.display = 'none';
     renderLive();
     pollChat(res.jobId, 0);
@@ -1879,7 +1909,7 @@ function renderLive() {
     wrap = document.createElement('div');
     wrap.id = 'liveWrap';
     wrap.className = 'msg-row assistant';
-    wrap.innerHTML = '<div class="avatar assistant">⚡</div>' +
+    wrap.innerHTML = '<div class="avatar assistant">✦</div>' +
       '<div class="msg assistant" style="min-width:240px">' +
       '<div class="role-label">Claude · 正在回复</div>' +
       '<div class="content" id="liveContent"></div></div>';
@@ -1932,7 +1962,8 @@ async function stopChat() {
 
 function setSendButtonIdle() {
   const sendBtn = document.getElementById('sendBtn');
-  sendBtn.textContent = '发送';
+  sendBtn.textContent = String.fromCharCode(8593);
+  sendBtn.title = '发送 (Enter)';
   sendBtn.style.opacity = '';
   sendBtn.disabled = !state.currentViewSessionId && !state.newSessionCwd;
 }
