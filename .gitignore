@@ -3,3 +3,10 @@ __pycache__/
 /tmp/
 *.log
 .env
+.mimosa/
+webui-state.json
+webui-titles.json
+webui-archived.json
+webui.config.json
+webui-trash/
+uploads/
