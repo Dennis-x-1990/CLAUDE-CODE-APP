@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Claude Code Desktop</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f59e0b'/%3E%3Cpath d='M38 8 22 34h10l-6 22 20-30H34l8-18z' fill='white'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23D97757%22%2F%3E%3Cg%20stroke%3D%22%23FFF6EC%22%20stroke-width%3D%227%22%20stroke-linecap%3D%22round%22%3E%3Cline%20x1%3D%2232.0%22%20y1%3D%2218.0%22%20x2%3D%2232.0%22%20y2%3D%22-2.0%22%2F%3E%3Cline%20x1%3D%2239.0%22%20y1%3D%2219.9%22%20x2%3D%2247.0%22%20y2%3D%226.0%22%2F%3E%3Cline%20x1%3D%2244.1%22%20y1%3D%2225.0%22%20x2%3D%2261.4%22%20y2%3D%2215.0%22%2F%3E%3Cline%20x1%3D%2246.0%22%20y1%3D%2232.0%22%20x2%3D%2262.0%22%20y2%3D%2232.0%22%2F%3E%3Cline%20x1%3D%2244.1%22%20y1%3D%2239.0%22%20x2%3D%2261.4%22%20y2%3D%2249.0%22%2F%3E%3Cline%20x1%3D%2239.0%22%20y1%3D%2244.1%22%20x2%3D%2247.0%22%20y2%3D%2258.0%22%2F%3E%3Cline%20x1%3D%2232.0%22%20y1%3D%2246.0%22%20x2%3D%2232.0%22%20y2%3D%2266.0%22%2F%3E%3Cline%20x1%3D%2225.0%22%20y1%3D%2244.1%22%20x2%3D%2217.0%22%20y2%3D%2258.0%22%2F%3E%3Cline%20x1%3D%2219.9%22%20y1%3D%2239.0%22%20x2%3D%222.6%22%20y2%3D%2249.0%22%2F%3E%3Cline%20x1%3D%2218.0%22%20y1%3D%2232.0%22%20x2%3D%222.0%22%20y2%3D%2232.0%22%2F%3E%3Cline%20x1%3D%2219.9%22%20y1%3D%2225.0%22%20x2%3D%222.6%22%20y2%3D%2215.0%22%2F%3E%3Cline%20x1%3D%2225.0%22%20y1%3D%2219.9%22%20x2%3D%2217.0%22%20y2%3D%226.0%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
 <script>
 /* apply saved theme before the stylesheet renders to avoid flashing */
 (function () {
@@ -152,6 +152,9 @@
     font-size: 15px;
     box-shadow: var(--shadow-sm);
   }
+  .sidebar-header .logo svg { width: 16px; height: 16px; display: block; }
+  .welcome-logo svg { width: 34px; height: 34px; display: block; }
+
   .sidebar-header .logo-text {
     font-family: var(--font-display);
     font-size: 15.5px;
@@ -1175,7 +1178,7 @@
 <!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <span class="logo">⚡</span>
+    <span class="logo"><svg viewBox="0 0 64 64" aria-hidden="true"><g stroke="#FFF6EC" stroke-width="7" stroke-linecap="round"><line x1="32.0" y1="18.0" x2="32.0" y2="-2.0"/><line x1="39.0" y1="19.9" x2="47.0" y2="6.0"/><line x1="44.1" y1="25.0" x2="61.4" y2="15.0"/><line x1="46.0" y1="32.0" x2="62.0" y2="32.0"/><line x1="44.1" y1="39.0" x2="61.4" y2="49.0"/><line x1="39.0" y1="44.1" x2="47.0" y2="58.0"/><line x1="32.0" y1="46.0" x2="32.0" y2="66.0"/><line x1="25.0" y1="44.1" x2="17.0" y2="58.0"/><line x1="19.9" y1="39.0" x2="2.6" y2="49.0"/><line x1="18.0" y1="32.0" x2="2.0" y2="32.0"/><line x1="19.9" y1="25.0" x2="2.6" y2="15.0"/><line x1="25.0" y1="19.9" x2="17.0" y2="6.0"/></g></svg></span>
     <span class="logo-text">Claude Code</span>
     <button class="btn archive-toggle" id="archiveBtn" onclick="toggleArchivedView()" title="查看 / 退出已归档会话">📦</button>
     <span class="active-dot online" id="activeDot" title="CLI status"></span>
@@ -1203,7 +1206,7 @@
 
   <div class="chat-container" id="chatContainer">
     <div class="chat-empty" id="welcomeEmpty">
-      <div class="welcome-logo">⚡</div>
+      <div class="welcome-logo"><svg viewBox="0 0 64 64" aria-hidden="true"><g stroke="#FFF6EC" stroke-width="7" stroke-linecap="round"><line x1="32.0" y1="18.0" x2="32.0" y2="-2.0"/><line x1="39.0" y1="19.9" x2="47.0" y2="6.0"/><line x1="44.1" y1="25.0" x2="61.4" y2="15.0"/><line x1="46.0" y1="32.0" x2="62.0" y2="32.0"/><line x1="44.1" y1="39.0" x2="61.4" y2="49.0"/><line x1="39.0" y1="44.1" x2="47.0" y2="58.0"/><line x1="32.0" y1="46.0" x2="32.0" y2="66.0"/><line x1="25.0" y1="44.1" x2="17.0" y2="58.0"/><line x1="19.9" y1="39.0" x2="2.6" y2="49.0"/><line x1="18.0" y1="32.0" x2="2.0" y2="32.0"/><line x1="19.9" y1="25.0" x2="2.6" y2="15.0"/><line x1="25.0" y1="19.9" x2="17.0" y2="6.0"/></g></svg></div>
       <div class="welcome-title">Claude Code</div>
       <div class="welcome-sub">从左侧选择会话，或开始一个全新对话</div>
       <div class="welcome-tips">
@@ -1463,7 +1466,7 @@ async function confirmAction() {
     if (state.currentViewSessionId === sid) {
       state.currentViewSessionId = null;
       document.getElementById('chatContainer').innerHTML =
-        '<div class="chat-empty"><div class="welcome-logo">⚡</div>' +
+        '<div class="chat-empty"><div class="welcome-logo"><svg viewBox="0 0 64 64" aria-hidden="true"><g stroke="#FFF6EC" stroke-width="7" stroke-linecap="round"><line x1="32.0" y1="18.0" x2="32.0" y2="-2.0"/><line x1="39.0" y1="19.9" x2="47.0" y2="6.0"/><line x1="44.1" y1="25.0" x2="61.4" y2="15.0"/><line x1="46.0" y1="32.0" x2="62.0" y2="32.0"/><line x1="44.1" y1="39.0" x2="61.4" y2="49.0"/><line x1="39.0" y1="44.1" x2="47.0" y2="58.0"/><line x1="32.0" y1="46.0" x2="32.0" y2="66.0"/><line x1="25.0" y1="44.1" x2="17.0" y2="58.0"/><line x1="19.9" y1="39.0" x2="2.6" y2="49.0"/><line x1="18.0" y1="32.0" x2="2.0" y2="32.0"/><line x1="19.9" y1="25.0" x2="2.6" y2="15.0"/><line x1="25.0" y1="19.9" x2="17.0" y2="6.0"/></g></svg></div>' +
         '<div class="welcome-title">Claude Code</div>' +
         '<div class="welcome-sub">从左侧选择会话，或开始一个全新对话</div></div>';
       document.getElementById('sessionTitle').textContent = '选择一个会话';
@@ -1532,7 +1535,7 @@ function closePermMenu() {
 
 document.addEventListener('click', () => closePermMenu());
 
-function selectPermMode(id) {
+function selectPermMode(id, silent) {
   state.permMode = id;
   closePermMenu();
   const m = PERM_MODES.find(x => x.id === id);
@@ -1540,7 +1543,7 @@ function selectPermMode(id) {
   const label = document.getElementById('permModeLabel');
   if (btn && m) btn.setAttribute('data-mode', m.id);
   if (label && m) label.textContent = m.name;
-  toast('权限模式：' + m.name, 'green');
+  if (!silent) toast('权限模式：' + m.name, 'green');
 }
 
 // ── Theme ────────────────────────────────────────────────────────────
@@ -1564,7 +1567,7 @@ function updateThemeBtn() {
 // ── Init ─────────────────────────────────────────────────────────────
 async function init() {
   updateThemeBtn();
-  selectPermMode(state.permMode || 'manual');
+  selectPermMode(state.permMode || 'manual', true);
   await Promise.all([loadSessions(), loadSettings()]);
   checkActive();
   state.pollInterval = setInterval(poll, 3000);
