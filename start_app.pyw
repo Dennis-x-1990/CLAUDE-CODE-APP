@@ -50,7 +50,9 @@ def start_server() -> None:
 
 
 def open_window() -> None:
-    url = f"http://127.0.0.1:{PORT}/"
+    # A fresh timestamped URL on every launch guarantees the window never
+    # renders a stale cached copy of the UI.
+    url = f"http://127.0.0.1:{PORT}/?launch={int(time.time() * 1000)}"
     for exe in BROWSERS:
         if os.path.exists(exe):
             try:
