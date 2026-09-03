@@ -717,9 +717,82 @@
     text-align: center;
     font-size: 10.5px;
     color: var(--text-muted);
-    padding: 6px 0 0;
+    padding: 5px 0 0;
     user-select: none;
   }
+
+  /* permission mode selector */
+  .perm-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 820px;
+    margin: 6px auto 0;
+    padding: 0 2px;
+    position: relative;
+  }
+  .perm-picker {
+    position: relative;
+  }
+  .perm-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 11.5px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--font-sans);
+  }
+  .perm-btn:hover { background: var(--card-bg); border-color: var(--border-strong); color: var(--text); }
+  .perm-btn .pm-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--text-muted);
+  }
+  .perm-btn[data-mode="acceptEdits"] .pm-dot { background: var(--green); }
+  .perm-btn[data-mode="dontAsk"] .pm-dot { background: var(--yellow); }
+  .perm-btn[data-mode="plan"] .pm-dot { background: #7aa5d8; }
+  .perm-btn[data-mode="bypassPermissions"] .pm-dot { background: var(--red); }
+  .perm-btn[data-mode="manual"] .pm-dot { background: var(--accent); }
+  .perm-menu {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 0;
+    min-width: 250px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    padding: 4px;
+    display: none;
+    z-index: 60;
+  }
+  .perm-menu.show { display: block; }
+  .perm-menu .pm-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 10px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    font-family: var(--font-sans);
+  }
+  .perm-menu .pm-item:hover { background: var(--thinking-bg); }
+  .perm-menu .pm-item.active { background: var(--accent-soft); }
+  .perm-menu .pm-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+  .perm-menu .pm-body { min-width: 0; }
+  .perm-menu .pm-name { font-size: 12px; font-weight: 600; color: var(--text); }
+  .perm-menu .pm-desc { font-size: 10.5px; color: var(--text-muted); line-height: 1.45; margin-top: 1px; }
   .sending-indicator {
     font-size: 11px;
     color: var(--warn-text);
@@ -1160,6 +1233,14 @@
       <textarea id="messageInput" placeholder="给 Claude 发消息… (Enter 发送, Shift+Enter 换行)" rows="1" onkeydown="handleInputKey(event)" oninput="autoResizeInput()"></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled title="发送 (Enter)">↑</button>
     </div>
+    <div class="perm-row">
+      <div class="perm-picker">
+        <button class="perm-btn" id="permModeBtn" data-mode="manual" onclick="togglePermMenu(event)" title="权限模式：决定 Claude 执行操作前是否需要批准">
+          <span class="pm-dot"></span><span id="permModeLabel">手动确认</span><span style="font-size:9px">▾</span>
+        </button>
+        <div class="perm-menu" id="permMenu"></div>
+      </div>
+    </div>
     <div class="composer-hint">Claude 可能会出错，请核查重要信息 · 消息由 Claude Code CLI 引擎处理</div>
   </div>
 
@@ -1270,6 +1351,7 @@ let state = {
   showArchived: false,  // sidebar shows archived sessions
   menuSid: null,        // session targeted by the ⋮ menu
   fsParent: null,       // parent folder in the new-session browser
+  permMode: 'manual',   // permission mode for the next chat message
 };
 
 // ── API ──────────────────────────────────────────────────────────────
@@ -1395,6 +1477,72 @@ async function confirmAction() {
   }
 }
 
+// ── Permission mode picker ───────────────────────────────────────────
+const PERM_MODES = [
+  { id: 'manual', name: '手动确认', dot: 'var(--accent)',
+    desc: '每次执行工具前都需要批准（最安全，默认）' },
+  { id: 'acceptEdits', name: '自动接受编辑', dot: 'var(--green)',
+    desc: '文件编辑自动放行；Bash 等其他操作仍需确认' },
+  { id: 'dontAsk', name: '不再询问', dot: 'var(--yellow)',
+    desc: '自动放行常规操作，仅高危动作询问' },
+  { id: 'plan', name: '计划模式', dot: '#7aa5d8',
+    desc: '只读分析并制定计划，不做任何修改' },
+  { id: 'bypassPermissions', name: '跳过所有权限', dot: 'var(--red)',
+    desc: '全部自动执行，不做任何询问（谨慎使用）' },
+];
+
+function renderPermMenu() {
+  const menu = document.getElementById('permMenu');
+  if (!menu) return;
+  menu.innerHTML = '';
+  PERM_MODES.forEach(m => {
+    const item = document.createElement('button');
+    item.className = 'pm-item' + (state.permMode === m.id ? ' active' : '');
+    const dot = document.createElement('span');
+    dot.className = 'pm-dot';
+    dot.style.background = m.dot;
+    const body = document.createElement('span');
+    body.className = 'pm-body';
+    const name = document.createElement('div');
+    name.className = 'pm-name';
+    name.textContent = m.name;
+    const desc = document.createElement('div');
+    desc.className = 'pm-desc';
+    desc.textContent = m.desc;
+    body.appendChild(name);
+    body.appendChild(desc);
+    item.appendChild(dot);
+    item.appendChild(body);
+    item.onclick = () => selectPermMode(m.id);
+    menu.appendChild(item);
+  });
+}
+
+function togglePermMenu(ev) {
+  if (ev) ev.stopPropagation();
+  const menu = document.getElementById('permMenu');
+  renderPermMenu();
+  menu.classList.toggle('show', !menu.classList.contains('show'));
+}
+
+function closePermMenu() {
+  const menu = document.getElementById('permMenu');
+  if (menu) menu.classList.remove('show');
+}
+
+document.addEventListener('click', () => closePermMenu());
+
+function selectPermMode(id) {
+  state.permMode = id;
+  closePermMenu();
+  const m = PERM_MODES.find(x => x.id === id);
+  const btn = document.getElementById('permModeBtn');
+  const label = document.getElementById('permModeLabel');
+  if (btn && m) btn.setAttribute('data-mode', m.id);
+  if (label && m) label.textContent = m.name;
+  toast('权限模式：' + m.name, 'green');
+}
+
 // ── Theme ────────────────────────────────────────────────────────────
 function toggleTheme() {
   const root = document.documentElement;
@@ -1416,6 +1564,7 @@ function updateThemeBtn() {
 // ── Init ─────────────────────────────────────────────────────────────
 async function init() {
   updateThemeBtn();
+  selectPermMode(state.permMode || 'manual');
   await Promise.all([loadSessions(), loadSettings()]);
   checkActive();
   state.pollInterval = setInterval(poll, 3000);
@@ -1800,6 +1949,7 @@ async function sendMessage() {
         sessionId: state.currentViewSessionId || null,
         cwd: state.currentViewSessionId ? null : state.newSessionCwd,
         message: fullMessage,
+        permissionMode: state.permMode,
       }),
     });
     if (!res || !res.jobId) throw new Error('no jobId');

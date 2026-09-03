@@ -884,6 +884,7 @@ class ChatRequest(BaseModel):
     sessionId: str | None = None   # None → start a brand-new session in `cwd`
     cwd: str | None = None
     message: str
+    permissionMode: str | None = None  # manual | acceptEdits | dontAsk | plan | bypassPermissions
 
 
 @app.post("/api/chat")
@@ -915,6 +916,12 @@ def chat_start(body: ChatRequest):
             "--verbose"]
     if sid:
         args += ["--resume", sid]
+    mode = body.permissionMode
+    if mode:
+        allowed_modes = ("manual", "acceptEdits", "dontAsk", "plan", "bypassPermissions")
+        if mode not in allowed_modes:
+            raise HTTPException(status_code=400, detail=f"Invalid permission mode: {mode}")
+        args += ["--permission-mode", mode]
 
     _chat_seq += 1
     job_id = f"chat-{int(time.time())}-{_chat_seq}"
