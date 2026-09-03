@@ -1457,7 +1457,10 @@ def managed_action(body: ManagedAction):
 
 @app.get("/")
 def index():
-    return FileResponse(str(static_dir / "index.html"))
+    # no-cache: the desktop app window must always pick up UI updates
+    # immediately instead of serving a stale cached copy.
+    return FileResponse(str(static_dir / "index.html"),
+                        headers={"Cache-Control": "no-cache"})
 
 
 if __name__ == "__main__":
