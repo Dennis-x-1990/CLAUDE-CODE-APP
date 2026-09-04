@@ -26,9 +26,12 @@ def _session_exists(session_id: str) -> bool:
 
 
 @router.post("/api/upload")
-async def upload_file(sessionId: str = Form(...), kind: str = Form("txt"),
+async def upload_file(sessionId: str = Form(""), kind: str = Form("txt"),
                       file: UploadFile = File(...)):
-    if not sessionId or not _session_exists(sessionId):
+    # sessionId is optional: brand-new sessions have no transcript yet, so a
+    # first-message attachment uploads before any session exists. When given,
+    # it must point at a real session.
+    if sessionId and not _session_exists(sessionId):
         raise HTTPException(status_code=404, detail="Session not found")
 
     try:

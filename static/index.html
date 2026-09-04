@@ -1656,15 +1656,12 @@ async function poll() {
       }
     }
 
-    // Skip polling while user is sending a message
-    if (state.sending) { dlog("poll", "SKIP: sending in progress"); return; }
-    // Only refresh if viewing a session AND its file size changed
-    if (state.currentViewSessionId) {
-      dlog("poll", "checking sid=" + state.currentViewSessionId.slice(0,8) + " sizes=" + (d.sessionSizes?.[state.currentViewSessionId]||'?'));
+    // Refresh when the viewed session's file grew — but never while a reply
+    // is streaming (the live bubble owns the view until the turn ends).
+    if (state.currentViewSessionId && !state.chatJob) {
       const newSize = d.sessionSizes?.[state.currentViewSessionId];
       const oldSize = state.lastSessionSizes[state.currentViewSessionId];
       if (newSize !== undefined && newSize !== oldSize) {
-        dlog("poll", "SIZE CHANGED: " + (oldSize||0) + " -> " + newSize + " (delta=" + (newSize - (oldSize||0)) + ")");
         state.lastSessionSizes[state.currentViewSessionId] = newSize;
         await loadConversation(state.currentViewSessionId, true);
       }
@@ -1727,6 +1724,7 @@ function renderModelSelector() {
 // ── Actions ──────────────────────────────────────────────────────────
 async function selectSession(sessionId) {
   state.currentViewSessionId = sessionId;
+  state.newSessionCwd = null;   // drop any unsent new-session draft
   state.lastMsgCount = 0; // force fresh render
   document.getElementById('sendBtn').disabled = false;
   renderSessionList(document.getElementById('searchInput').value);
@@ -2103,7 +2101,8 @@ async function finishChat(jobId, d) {
       await selectSession(sid);
     }
   }
-  if (d.status !== 'error') toast('✅ 回复完成', 'green');
+  if (d.status === 'stopped') toast('已停止本次回复', 'yellow');
+  else if (d.status !== 'error') toast('✅ 回复完成', 'green');
 }
 
 async function stopChat() {
@@ -2130,8 +2129,6 @@ function showOptimisticMessage(text) {
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
 }
-
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ── Model switching ──────────────────────────────────────────────────
 async function switchModel() {
@@ -2511,7 +2508,7 @@ async function uploadAttachments() {
   const out = [];
   for (const a of state.attachFiles) {
     const fd = new FormData();
-    fd.append('sessionId', state.currentViewSessionId);
+    if (state.currentViewSessionId) fd.append('sessionId', state.currentViewSessionId);
     fd.append('kind', kindFromFile(a.file));
     fd.append('file', a.file);
     const res = await fetch('/api/upload', { method: 'POST', body: fd });

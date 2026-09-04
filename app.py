@@ -244,8 +244,21 @@ def _parse_first_prompt(filepath: Path) -> str:
     return prompt
 
 
+_CWD_CACHE = {}
+
+
 def _session_cwd(filepath: Path):
-    """Resolve a session's real working directory from the `cwd` field in its JSONL."""
+    """Resolve a session's real working directory from the `cwd` field in its
+    JSONL (mtime-cached — /api/sessions walks every session on each call)."""
+    try:
+        mtime = filepath.stat().st_mtime
+    except OSError:
+        return None
+    key = str(filepath)
+    cached = _CWD_CACHE.get(key)
+    if cached and cached[0] == mtime:
+        return cached[1]
+    cwd = None
     try:
         with open(filepath, encoding="utf-8", errors="replace") as fh:
             for line_no, line in enumerate(fh):
@@ -257,10 +270,11 @@ def _session_cwd(filepath: Path):
                     continue
                 cwd = obj.get("cwd")
                 if isinstance(cwd, str) and cwd:
-                    return cwd
+                    break
     except Exception:
         pass
-    return None
+    _CWD_CACHE[key] = (mtime, cwd)
+    return cwd
 
 
 def _list_all_sessions(archived_only: bool = False) -> list:
