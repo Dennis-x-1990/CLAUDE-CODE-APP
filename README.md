@@ -36,7 +36,7 @@ python install_hooks.py      # 终端 claude 会话接入页面（服务器首�
 python install_autostart.py  # 开机自启：服务 + 桌面窗口
 ```
 
-之后从开始菜单/桌面点 **Claude Code WebUI** 即可使用；在终端里 `claude` 照常用，页面自动同步。
+之后从开始菜单/桌面点 **Claude Code WebUI** 即可使用；在终端里 `claude` 照常用，对话与权限自动同步到 App（服务静默启动，不会弹出浏览器页面；如需恢复自动弹页，在 `webui.config.json` 设 `"autoOpenBrowser": true`）。
 
 ### 卸载集成
 
