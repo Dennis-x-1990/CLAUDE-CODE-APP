@@ -50,7 +50,8 @@ TRASH_DIR = CLAUDE_DIR / "webui-trash"
 CONFIG_FILE = APP_DIR / "webui.config.json"
 DEFAULT_CONFIG = {
     "port": 9020,
-    "autoOpenBrowser": True,        # open the browser when a hook cold-starts the server
+    "autoOpenBrowser": False,       # auto-open a browser page when a hook cold-starts
+                                    # the server (off by default: use the desktop app)
     "autoInstallHooks": True,       # write hooks into ~/.claude/settings.json at startup
     "autoStartAtBoot": True,        # register a Windows login autostart entry
     "browserApprovalEnabled": True, # PermissionRequest hooks may wait for a browser decision

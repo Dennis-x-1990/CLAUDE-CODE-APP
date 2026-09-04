@@ -53,7 +53,7 @@ EVENT_PATHS = {
 DEFAULT_PORT = 9020
 DEFAULT_CONFIG = {
     "port": DEFAULT_PORT,
-    "autoOpenBrowser": True,
+    "autoOpenBrowser": False,   # desktop app is the interface; no browser tab on claude start
     "permissionTimeoutSec": 120,
 }
 
